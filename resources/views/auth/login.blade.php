@@ -3,8 +3,8 @@
 
 {{-- Judul --}}
 <div class="mb-8">
-    <h2 class="text-[22px] font-semibold text-slate-800">Selamat datang kembali</h2>
-    <p class="mt-1 text-[13px] text-slate-400">Masuk ke akun Anda untuk melanjutkan.</p>
+    <h2 class="text-[22px] font-semibold text-stone-800">Selamat datang kembali</h2>
+    <p class="mt-1 text-[13px] text-stone-400">Masuk ke akun Anda untuk melanjutkan.</p>
 </div>
 
 {{-- Session Status --}}
@@ -25,7 +25,7 @@
         </label>
         <div class="relative">
             <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-                <i class="ti ti-mail text-slate-400 text-[15px]" aria-hidden="true"></i>
+                <i class="ti ti-mail text-stone-400 text-[15px]" aria-hidden="true"></i>
             </span>
             <input
                 id="email"
@@ -37,11 +37,11 @@
                 autocomplete="username"
                 placeholder="nama@email.com"
                 class="
-                    w-full rounded-lg border border-slate-200 bg-white
+                    w-full rounded-lg border border-stone-200 bg-white
                     py-2.5 pl-9 pr-3
-                    text-[13px] text-slate-800 placeholder-slate-300
+                    text-[13px] text-stone-800 placeholder-stone-300
                     transition-colors duration-150
-                    focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30
+                    focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/30
                     @error('email') border-red-300 focus:border-red-400 focus:ring-red-400/30 @enderror
                 "
             >
@@ -62,14 +62,14 @@
             </label>
             @if (Route::has('password.request'))
                 <a href="{{ route('password.request') }}"
-                   class="text-[12px] text-blue-600 hover:text-blue-700 transition-colors">
+                   class="text-[12px] text-orange-600 hover:text-orange-700 transition-colors">
                     Lupa kata sandi?
                 </a>
             @endif
         </div>
         <div class="relative">
             <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center">
-                <i class="ti ti-lock text-slate-400 text-[15px]" aria-hidden="true"></i>
+                <i class="ti ti-lock text-stone-400 text-[15px]" aria-hidden="true"></i>
             </span>
             <input
                 id="password"
@@ -79,18 +79,18 @@
                 autocomplete="current-password"
                 placeholder="••••••••"
                 class="
-                    w-full rounded-lg border border-slate-200 bg-white
+                    w-full rounded-lg border border-stone-200 bg-white
                     py-2.5 pl-9 pr-10
-                    text-[13px] text-slate-800 placeholder-slate-300
+                    text-[13px] text-stone-800 placeholder-stone-300
                     transition-colors duration-150
-                    focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/30
+                    focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/30
                     @error('password') border-red-300 focus:border-red-400 focus:ring-red-400/30 @enderror
                 "
             >
             <button
                 type="button"
                 @click="showPassword = !showPassword"
-                class="absolute inset-y-0 right-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors focus:outline-none"
+                class="absolute inset-y-0 right-3 flex items-center text-stone-400 hover:text-slate-600 transition-colors focus:outline-none"
                 :aria-label="showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'"
             >
                 <i :class="showPassword ? 'ti ti-eye-off' : 'ti ti-eye'" class="text-[15px]" aria-hidden="true"></i>
@@ -111,9 +111,9 @@
                 id="remember_me"
                 type="checkbox"
                 name="remember"
-                class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-400/40 focus:ring-offset-0"
+                class="h-4 w-4 rounded border-stone-300 text-orange-600 focus:ring-orange-400/40 focus:ring-offset-0"
             >
-            <span class="text-[13px] text-slate-500">Ingat saya di perangkat ini</span>
+            <span class="text-[13px] text-stone-500">Ingat saya di perangkat ini</span>
         </label>
     </div>
 
@@ -121,14 +121,14 @@
     <button
         type="submit"
         class="
-            flex w-full items-center justify-center gap-2
-            rounded-lg bg-[#1e3a5f] px-4 py-2.5
-            text-[13.5px] font-medium text-white
-            transition-colors duration-150
-            hover:bg-[#162d4a]
-            focus:outline-none focus:ring-2 focus:ring-blue-400/40 focus:ring-offset-1
-        "
-    >
+                flex w-full items-center justify-center gap-2
+                rounded-lg bg-orange-600 px-4 py-2.5
+                text-[13.5px] font-medium text-white
+                transition-colors duration-150
+                hover:bg-orange-700
+                focus:outline-none focus:ring-2 focus:ring-orange-400/40 focus:ring-offset-1
+            "
+        >
         <i class="ti ti-login text-base" aria-hidden="true"></i>
         Masuk ke Dasbor
     </button>

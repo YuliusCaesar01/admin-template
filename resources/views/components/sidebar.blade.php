@@ -10,6 +10,26 @@ $defaultNavItems = [
     ['label' => 'Menu', 'items' => array_values(array_filter([
         $user->can('dashboard.view') ? ['label' => 'Dashboard', 'icon' => 'ti-layout-dashboard', 'route' => 'dashboard', 'url' => route('dashboard')] : null,
     ]))],
+    ['label' => 'Product', 'items' => [
+        $user->canAny(['users.view', 'roles.view','permissions.view']) ? [
+            'label'    => 'Manage Product',
+            'icon'     => 'ti-users',
+            'children' => array_values(array_filter([
+                $user->can('users.view') ? [
+                'label'        => 'Category',
+                'route'        => 'users.index',
+                'url'          => route('users.index'),
+                'activeRoutes' => ['users.index', 'users.create', 'users.edit', 'users.show'],
+            ] : null,
+                            $user->can('roles.view') ? [
+                'label'        => 'Packages',
+                'route'        => 'roles.index',
+                'url'          => route('roles.index'),
+                'activeRoutes' => ['roles.index', 'roles.create', 'roles.edit'],
+            ] : null,
+            ])),
+        ] : null,
+    ]],
     ['label' => 'Manajemen User', 'items' => [
         $user->canAny(['users.view', 'roles.view','permissions.view']) ? [
             'label'    => 'Manage User',
@@ -44,22 +64,22 @@ $initials = collect(explode(' ', $user->name ?? 'User'))->take(2)->map(fn($w) =>
 
 <aside
     :class="{ 'w-60': !collapsed, 'w-[60px]': collapsed, 'translate-x-0': mobileOpen, '-translate-x-full lg:translate-x-0': !mobileOpen }"
-    class="fixed inset-y-0 left-0 z-30 flex flex-col bg-white border-r border-slate-200 transition-all duration-250 ease-in-out lg:static lg:inset-auto lg:translate-x-0"
+    class="fixed inset-y-0 left-0 z-30 flex flex-col bg-white border-r border-stone-200 transition-all duration-250 ease-in-out lg:static lg:inset-auto lg:translate-x-0"
     aria-label="Navigasi utama"
 >
     {{-- LOGO --}}
-    <div class="relative flex h-[62px] items-center border-b border-slate-200 px-4">
+    <div class="relative flex h-[62px] items-center border-b border-stone-200 px-4">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 overflow-hidden">
-            <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#1e3a5f]">
-                <x-application-logo class="h-5 w-5 fill-current text-blue-300" />
+            <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#E67E22]">
+                <x-application-logo class="h-5 w-5 fill-current text-orange-300" />
             </div>
-            <span class="whitespace-nowrap text-[15px] font-semibold text-[#1e3a5f] transition-all duration-200"
+            <span class="whitespace-nowrap text-[15px] font-semibold text-[#E67E22] transition-all duration-200"
                 :class="collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'">
-                Admin<span class="text-blue-600">Template</span>
+                Admin<span class="text-orange-600">Template</span>
             </span>
         </a>
         <button @click="toggle()" :title="collapsed ? 'Perluas' : 'Persempit'"
-            class="absolute -right-[11px] top-1/2 -translate-y-1/2 hidden lg:flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white border border-slate-200 text-blue-600 text-xs hover:bg-blue-50 hover:border-blue-300 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400/40"
+            class="absolute -right-[11px] top-1/2 -translate-y-1/2 hidden lg:flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white border border-stone-200 text-orange-600 text-xs hover:bg-orange-50 hover:border-orange-300 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
             aria-label="Toggle sidebar">
             <i class="ti ti-chevron-left transition-transform duration-250" :class="collapsed ? 'rotate-180' : ''" aria-hidden="true"></i>
         </button>
@@ -68,7 +88,7 @@ $initials = collect(explode(' ', $user->name ?? 'User'))->take(2)->map(fn($w) =>
     {{-- NAVIGATION --}}
     <nav class="flex-1 overflow-y-auto overflow-x-hidden py-3 px-2 scrollbar-hide" role="navigation">
         @foreach($menu as $section)
-            <div class="mb-1 px-2 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400 transition-all duration-150"
+            <div class="mb-1 px-2 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-stone-400 transition-all duration-150"
                  :class="collapsed ? 'opacity-0 h-0 overflow-hidden pt-0 pb-0' : 'opacity-100'" aria-hidden="true">
                 {{ $section['label'] }}
             </div>
@@ -86,20 +106,20 @@ $initials = collect(explode(' ', $user->name ?? 'User'))->take(2)->map(fn($w) =>
     </nav>
 
     {{-- USER PROFILE --}}
-    <div class="border-t border-slate-200 px-2 py-3">
+    <div class="border-t border-stone-200 px-2 py-3">
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open"
-                class="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-blue-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400/40"
+                class="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 hover:bg-orange-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
                 :aria-expanded="open">
-                <div class="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-[#1e3a5f] text-[11px] font-semibold text-blue-200 border-2 border-blue-100">
+                <div class="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-[#E67E22] text-[11px] font-semibold text-[#FFEAD8] border-2 border-orange-100">
                     {{ $initials }}
                 </div>
                 <div class="flex-1 min-w-0 text-left transition-all duration-150"
                      :class="collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'">
-                    <p class="truncate text-[12.5px] font-medium text-slate-800 leading-tight">{{ $user->name ?? 'Pengguna' }}</p>
-                    <p class="truncate text-[11px] text-slate-400">{{ $user->roles?->first()?->name ?? 'Administrator' }}</p>
+                    <p class="truncate text-[12.5px] font-medium text-stone-800 leading-tight">{{ $user->name ?? 'Pengguna' }}</p>
+                    <p class="truncate text-[11px] text-stone-400">{{ $user->roles?->first()?->name ?? 'Administrator' }}</p>
                 </div>
-                <i class="ti ti-dots-vertical flex-shrink-0 text-sm text-slate-300 transition-all duration-150"
+                <i class="ti ti-dots-vertical flex-shrink-0 text-sm text-stone-300 transition-all duration-150"
                    :class="collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'" aria-hidden="true"></i>
             </button>
             <div x-show="open"
@@ -110,11 +130,11 @@ $initials = collect(explode(' ', $user->name ?? 'User'))->take(2)->map(fn($w) =>
                  x-transition:leave-start="opacity-100"
                  x-transition:leave-end="opacity-0 scale-95"
                  @click.outside="open = false"
-                 class="absolute bottom-full left-0 right-0 mb-1 rounded-xl bg-white border border-slate-200 shadow-lg shadow-slate-200/60 py-1"
+                 class="absolute bottom-full left-0 right-0 mb-1 rounded-xl bg-white border border-stone-200 shadow-lg shadow-slate-200/60 py-1"
                  role="menu">
                 <a href="{{ route('profile.edit') }}"
-                   class="flex items-center gap-2.5 px-3 py-2 text-[13px] text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-colors" role="menuitem">
-                    <i class="ti ti-user-circle text-blue-400" aria-hidden="true"></i> Profil Saya
+                   class="flex items-center gap-2.5 px-3 py-2 text-[13px] text-slate-600 hover:bg-orange-50 hover:text-orange-700 transition-colors" role="menuitem">
+                    <i class="ti ti-user-circle text-orange-400" aria-hidden="true"></i> Profil Saya
                 </a>
                 <div class="my-1 mx-2 h-px bg-slate-100" role="separator"></div>
                 <form method="POST" action="{{ route('logout') }}">

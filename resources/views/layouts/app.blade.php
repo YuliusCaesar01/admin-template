@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full bg-slate-50 font-sans antialiased">
+<body class="h-full bg-stone-50 font-sans antialiased">
 
 <div x-data="sidebarApp()" x-init="init()" class="flex h-screen overflow-hidden">
 
@@ -37,7 +37,7 @@
 
     <div class="flex flex-1 flex-col overflow-hidden">
         <x-topbar :title="$title ?? 'Dashboard'" />
-        <main class="flex-1 overflow-y-auto bg-slate-50 p-6">
+        <main class="flex-1 overflow-y-auto bg-stone-50 p-6">
             {{ $slot }}
         </main>
     </div>

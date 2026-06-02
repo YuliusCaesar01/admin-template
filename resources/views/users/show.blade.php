@@ -5,12 +5,12 @@
         {{-- Header --}}
         <div class="flex items-center gap-3">
             <a href="{{ route('users.index') }}"
-               class="inline-flex items-center justify-center h-9 w-9 rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition shadow-sm">
+               class="inline-flex items-center justify-center h-9 w-9 rounded-xl border border-stone-200 bg-white text-stone-500 hover:bg-stone-50 hover:text-slate-700 transition shadow-sm">
                 <i class="ti ti-arrow-left text-base"></i>
             </a>
             <div>
-                <h1 class="text-xl font-semibold text-slate-800">Detail User</h1>
-                <p class="text-sm text-slate-500 mt-0.5">Informasi lengkap akun pengguna</p>
+                <h1 class="text-xl font-semibold text-stone-800">Detail User</h1>
+                <p class="text-sm text-stone-500 mt-0.5">Informasi lengkap akun pengguna</p>
             </div>
         </div>
 
@@ -36,13 +36,13 @@
             <div class="space-y-4">
 
                 {{-- Profile Card --}}
-                <div class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6 flex flex-col items-center text-center gap-3">
-                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#1e3a5f]/10 text-3xl font-bold text-[#1e3a5f]">
+                <div class="rounded-2xl border border-stone-200 bg-white shadow-sm p-6 flex flex-col items-center text-center gap-3">
+                    <div class="flex h-20 w-20 items-center justify-center rounded-full bg-[#E67E22]/10 text-3xl font-bold text-[#E67E22]">
                         {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold text-slate-800">{{ $user->name }}</h2>
-                        <p class="text-sm text-slate-500">{{ $user->email }}</p>
+                        <h2 class="text-lg font-semibold text-stone-800">{{ $user->name }}</h2>
+                        <p class="text-sm text-stone-500">{{ $user->email }}</p>
                     </div>
 
                     {{-- Role Badge --}}
@@ -50,21 +50,21 @@
                         @forelse ($user->roles as $role)
                             <span @class([
                                 'inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium',
-                                'bg-[#1e3a5f]/10 text-[#1e3a5f]' => $role->name === 'admin',
+                                'bg-[#E67E22]/10 text-[#E67E22]' => $role->name === 'admin',
                                 'bg-slate-100 text-slate-600'     => $role->name !== 'admin',
                             ])>
                                 <i @class(['ti', 'ti-shield-half' => $role->name === 'admin', 'ti-user' => $role->name !== 'admin'])></i>
                                 {{ ucfirst($role->name) }}
                             </span>
                         @empty
-                            <span class="text-xs text-slate-400 italic">Tidak ada role</span>
+                            <span class="text-xs text-stone-400 italic">Tidak ada role</span>
                         @endforelse
                     </div>
 
                     <div class="w-full border-t border-slate-100 pt-4 mt-1 space-y-2">
                         @can('users.edit')
                             <a href="{{ route('users.edit', $user) }}"
-                               class="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1e3a5f] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#16304f] transition">
+                               class="flex w-full items-center justify-center gap-2 rounded-xl bg-[#E67E22] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#E67E22] transition">
                                 <i class="ti ti-pencil text-base"></i> Edit User
                             </a>
                         @endcan
@@ -84,22 +84,22 @@
                 </div>
 
                 {{-- Info Akun --}}
-                <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <div class="rounded-2xl border border-stone-200 bg-white shadow-sm">
                     <div class="border-b border-slate-100 px-5 py-4">
                         <p class="text-sm font-medium text-slate-700">Informasi Akun</p>
                     </div>
                     <dl class="divide-y divide-slate-100">
                         <div class="grid grid-cols-3 gap-2 px-5 py-3">
-                            <dt class="flex items-center gap-1.5 text-xs text-slate-500">
-                                <i class="ti ti-id text-slate-400"></i> ID
+                            <dt class="flex items-center gap-1.5 text-xs text-stone-500">
+                                <i class="ti ti-id text-stone-400"></i> ID
                             </dt>
                             <dd class="col-span-2 font-mono text-xs text-slate-600 break-all">
                                 {{ substr($user->id, 0, 8) }}...
                             </dd>
                         </div>
                         <div class="grid grid-cols-3 gap-2 px-5 py-3">
-                            <dt class="flex items-center gap-1.5 text-xs text-slate-500">
-                                <i class="ti ti-shield-check text-slate-400"></i> Verified
+                            <dt class="flex items-center gap-1.5 text-xs text-stone-500">
+                                <i class="ti ti-shield-check text-stone-400"></i> Verified
                             </dt>
                             <dd class="col-span-2">
                                 @if ($user->email_verified_at)
@@ -114,21 +114,21 @@
                             </dd>
                         </div>
                         <div class="grid grid-cols-3 gap-2 px-5 py-3">
-                            <dt class="flex items-center gap-1.5 text-xs text-slate-500">
-                                <i class="ti ti-calendar text-slate-400"></i> Dibuat
+                            <dt class="flex items-center gap-1.5 text-xs text-stone-500">
+                                <i class="ti ti-calendar text-stone-400"></i> Dibuat
                             </dt>
                             <dd class="col-span-2 text-xs text-slate-600">
                                 {{ $user->created_at->format('d M Y') }}
-                                <span class="block text-slate-400">{{ $user->created_at->diffForHumans() }}</span>
+                                <span class="block text-stone-400">{{ $user->created_at->diffForHumans() }}</span>
                             </dd>
                         </div>
                         <div class="grid grid-cols-3 gap-2 px-5 py-3">
-                            <dt class="flex items-center gap-1.5 text-xs text-slate-500">
-                                <i class="ti ti-calendar-check text-slate-400"></i> Diperbarui
+                            <dt class="flex items-center gap-1.5 text-xs text-stone-500">
+                                <i class="ti ti-calendar-check text-stone-400"></i> Diperbarui
                             </dt>
                             <dd class="col-span-2 text-xs text-slate-600">
                                 {{ $user->updated_at->format('d M Y') }}
-                                <span class="block text-slate-400">{{ $user->updated_at->diffForHumans() }}</span>
+                                <span class="block text-stone-400">{{ $user->updated_at->diffForHumans() }}</span>
                             </dd>
                         </div>
                     </dl>
@@ -140,12 +140,12 @@
             <div class="lg:col-span-2 space-y-4">
 
                 {{-- Permission dari Role (read-only) --}}
-                <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <div class="rounded-2xl border border-stone-200 bg-white shadow-sm">
                     <div class="border-b border-slate-100 px-5 py-4">
                         <p class="text-sm font-semibold text-slate-700">Permission dari Role</p>
-                        <p class="text-xs text-slate-400 mt-0.5">Diperoleh otomatis — ubah melalui halaman
+                        <p class="text-xs text-stone-400 mt-0.5">Diperoleh otomatis — ubah melalui halaman
                             @if($user->roles->first())
-                                <a href="{{ route('roles.edit', $user->roles->first()) }}" class="text-[#1e3a5f] hover:underline">Role</a>
+                                <a href="{{ route('roles.edit', $user->roles->first()) }}" class="text-[#E67E22] hover:underline">Role</a>
                             @else
                                 Role
                             @endif
@@ -157,7 +157,7 @@
                         @endphp
 
                         @if ($groupedRolePerms->isEmpty())
-                            <div class="flex flex-col items-center gap-2 py-6 text-slate-400">
+                            <div class="flex flex-col items-center gap-2 py-6 text-stone-400">
                                 <i class="ti ti-lock-off text-3xl"></i>
                                 <p class="text-sm">Tidak ada permission dari role</p>
                             </div>
@@ -165,7 +165,7 @@
                             <div class="space-y-4">
                                 @foreach ($groupedRolePerms as $group => $perms)
                                     <div>
-                                        <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">{{ $group }}</p>
+                                        <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-stone-400">{{ $group }}</p>
                                         <div class="flex flex-wrap gap-2">
                                             @foreach ($perms as $perm)
                                                 <span class="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
@@ -201,27 +201,27 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="rounded-2xl border border-[#1e3a5f]/20 bg-white shadow-sm">
+                    <div class="rounded-2xl border border-[#E67E22]/20 bg-white shadow-sm">
 
                         {{-- Header --}}
                         <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                             <div>
                                 <p class="text-sm font-semibold text-slate-700">Permission Langsung (Direct)</p>
-                                <p class="text-xs text-slate-400 mt-0.5">
+                                <p class="text-xs text-stone-400 mt-0.5">
                                     Permission tambahan di luar role —
-                                    dipilih: <span class="font-semibold text-[#1e3a5f]" x-text="selected.length"></span>
+                                    dipilih: <span class="font-semibold text-[#E67E22]" x-text="selected.length"></span>
                                 </p>
                             </div>
                             <label class="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
                                 <input type="checkbox" x-model="selectAll" @change="toggleAll()"
-                                       class="h-4 w-4 rounded border-slate-300 text-[#1e3a5f] focus:ring-[#1e3a5f]/20">
+                                       class="h-4 w-4 rounded border-stone-300 text-[#E67E22] focus:ring-[#E67E22]/20">
                                 Pilih Semua
                             </label>
                         </div>
 
                         {{-- Permission List --}}
                         @if ($allPermissions->isEmpty())
-                            <div class="flex flex-col items-center gap-2 py-10 text-slate-400">
+                            <div class="flex flex-col items-center gap-2 py-10 text-stone-400">
                                 <i class="ti ti-lock-off text-3xl"></i>
                                 <p class="text-sm">Belum ada permission tersedia</p>
                             </div>
@@ -232,7 +232,7 @@
                                 @foreach ($allPermissions as $group => $groupPermissions)
                                     <div class="px-5 py-4">
                                         <div class="mb-3 flex items-center justify-between">
-                                            <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ $group }}</p>
+                                            <p class="text-xs font-semibold uppercase tracking-wide text-stone-400">{{ $group }}</p>
                                             <button type="button"
                                                     @click="
                                                         const group = {{ $groupPermissions->pluck('name')->toJson() }};
@@ -242,7 +242,7 @@
                                                             ? selected.filter(p => !nonRole.includes(p))
                                                             : [...new Set([...selected, ...nonRole])];
                                                     "
-                                                    class="text-xs text-[#1e3a5f] hover:underline">
+                                                    class="text-xs text-[#E67E22] hover:underline">
                                                 Pilih grup ini
                                             </button>
                                         </div>
@@ -253,17 +253,17 @@
 
                                                 <label @class([
                                                     'flex items-center gap-3 rounded-xl border p-2.5 transition',
-                                                    'border-[#1e3a5f]/20 bg-[#1e3a5f]/5 cursor-not-allowed' => $fromRole,
-                                                    'border-transparent hover:border-slate-200 hover:bg-slate-50 cursor-pointer' => !$fromRole,
+                                                    'border-[#E67E22]/20 bg-[#E67E22]/5 cursor-not-allowed' => $fromRole,
+                                                    'border-transparent hover:border-stone-200 hover:bg-stone-50 cursor-pointer' => !$fromRole,
                                                 ])
                                                 @if(!$fromRole)
-                                                    :class="selected.includes('{{ $permission->name }}') ? 'border-[#1e3a5f]/20 bg-[#1e3a5f]/5' : ''"
+                                                    :class="selected.includes('{{ $permission->name }}') ? 'border-[#E67E22]/20 bg-[#E67E22]/5' : ''"
                                                 @endif>
 
                                                     @if ($fromRole)
                                                         {{-- Centang disabled dari role --}}
                                                         <input type="checkbox" checked disabled
-                                                               class="h-4 w-4 rounded border-slate-300 text-[#1e3a5f] opacity-50 cursor-not-allowed flex-shrink-0">
+                                                               class="h-4 w-4 rounded border-stone-300 text-[#E67E22] opacity-50 cursor-not-allowed flex-shrink-0">
                                                         <input type="hidden" name="permissions[]" value="{{ $permission->name }}">
                                                     @else
                                                         {{-- Checkbox normal --}}
@@ -271,17 +271,17 @@
                                                                name="permissions[]"
                                                                value="{{ $permission->name }}"
                                                                x-model="selected"
-                                                               class="h-4 w-4 rounded border-slate-300 text-[#1e3a5f] focus:ring-[#1e3a5f]/20 flex-shrink-0">
+                                                               class="h-4 w-4 rounded border-stone-300 text-[#E67E22] focus:ring-[#E67E22]/20 flex-shrink-0">
                                                     @endif
 
                                                     <div class="flex-1 min-w-0">
                                                         <p @class([
                                                             'text-sm font-medium',
-                                                            'text-slate-400' => $fromRole,
+                                                            'text-stone-400' => $fromRole,
                                                             'text-slate-700' => !$fromRole,
                                                         ])>{{ $permission->name }}</p>
                                                         @if ($fromRole)
-                                                            <p class="text-xs text-[#1e3a5f]/50">Dari role — tidak dapat diubah</p>
+                                                            <p class="text-xs text-[#E67E22]/50">Dari role — tidak dapat diubah</p>
                                                         @endif
                                                     </div>
                                                 </label>
@@ -296,7 +296,7 @@
                         {{-- Footer --}}
                         <div class="flex justify-end border-t border-slate-100 px-5 py-4">
                             <button type="submit"
-                                    class="inline-flex items-center gap-2 rounded-xl bg-[#1e3a5f] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#16304f] transition">
+                                    class="inline-flex items-center gap-2 rounded-xl bg-[#E67E22] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#E67E22] transition">
                                 <i class="ti ti-device-floppy"></i> Simpan Permission
                             </button>
                         </div>

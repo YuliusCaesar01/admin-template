@@ -8,7 +8,7 @@
         <h1 class="text-xl font-semibold text-slate-100">
             Selamat datang, {{ auth()->user()->name }} 👋
         </h1>
-        <p class="mt-1 text-sm text-slate-500">
+        <p class="mt-1 text-sm text-stone-500">
             Berikut ringkasan aktivitas sistem hari ini.
         </p>
     </div>
@@ -28,11 +28,11 @@
         @foreach($stats as $stat)
             <div class="rounded-xl border border-blue-900/20 bg-navy-800 p-5 animate-fade-in-up">
                 <div class="mb-3 flex items-center justify-between">
-                    <span class="text-xs font-medium uppercase tracking-wider text-slate-500">
+                    <span class="text-xs font-medium uppercase tracking-wider text-stone-500">
                         {{ $stat['label'] }}
                     </span>
                     <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-900/30">
-                        <i class="ti {{ $stat['icon'] }} text-blue-400 text-base" aria-hidden="true"></i>
+                        <i class="ti {{ $stat['icon'] }} text-orange-400 text-base" aria-hidden="true"></i>
                     </div>
                 </div>
                 <div class="text-2xl font-semibold text-slate-100">{{ $stat['value'] }}</div>
@@ -53,10 +53,10 @@
             <h2 class="mb-4 text-sm font-semibold text-slate-200">Aktivitas Terbaru</h2>
             <div class="space-y-3">
                 @php $activities = [
-                    ['user' => 'Ahmad N.',    'action' => 'menambahkan produk baru',       'time' => '5 menit lalu',   'icon' => 'ti-plus',     'color' => 'text-blue-400'],
+                    ['user' => 'Ahmad N.',    'action' => 'menambahkan produk baru',       'time' => '5 menit lalu',   'icon' => 'ti-plus',     'color' => 'text-orange-400'],
                     ['user' => 'Siti R.',     'action' => 'memperbarui profil pengguna',   'time' => '23 menit lalu',  'icon' => 'ti-edit',     'color' => 'text-emerald-400'],
                     ['user' => 'Budi S.',     'action' => 'mengekspor laporan bulanan',    'time' => '1 jam lalu',     'icon' => 'ti-download', 'color' => 'text-amber-400'],
-                    ['user' => 'Dewi M.',     'action' => 'mengubah pengaturan keamanan',  'time' => '3 jam lalu',     'icon' => 'ti-shield',   'color' => 'text-blue-400'],
+                    ['user' => 'Dewi M.',     'action' => 'mengubah pengaturan keamanan',  'time' => '3 jam lalu',     'icon' => 'ti-shield',   'color' => 'text-orange-400'],
                 ]; @endphp
 
                 @foreach($activities as $activity)
@@ -65,7 +65,7 @@
                             <i class="ti {{ $activity['icon'] }} {{ $activity['color'] }} text-sm" aria-hidden="true"></i>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm text-slate-300">
+                            <p class="text-sm text-stone-300">
                                 <span class="font-medium text-slate-200">{{ $activity['user'] }}</span>
                                 {{ $activity['action'] }}
                             </p>
@@ -93,12 +93,12 @@
                         class="
                             flex flex-col items-center gap-2 rounded-lg p-3
                             border border-blue-900/20 bg-navy-900/50
-                            hover:border-blue-700/40 hover:bg-blue-900/20
+                            hover:border-orange-700/40 hover:bg-blue-900/20
                             transition-all duration-150 group
                         "
                     >
-                        <i class="ti {{ $link['icon'] }} text-blue-500 text-xl group-hover:text-blue-400 transition-colors" aria-hidden="true"></i>
-                        <span class="text-xs font-medium text-slate-400 group-hover:text-slate-300 transition-colors">
+                        <i class="ti {{ $link['icon'] }} text-orange-500 text-xl group-hover:text-orange-400 transition-colors" aria-hidden="true"></i>
+                        <span class="text-xs font-medium text-stone-400 group-hover:text-stone-300 transition-colors">
                             {{ $link['label'] }}
                         </span>
                     </a>
