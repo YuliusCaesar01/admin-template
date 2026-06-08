@@ -10,7 +10,7 @@
         @isset($title)
             {{ $title }} -
         @endisset
-        {{ config('app.name', 'AdminPro') }}
+        {{ config('app.name', 'PM-PUTP') }}
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">

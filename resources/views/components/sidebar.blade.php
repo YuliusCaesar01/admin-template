@@ -7,55 +7,113 @@ use Illuminate\Support\Facades\Auth;
 $user = Auth::user();
 
 $defaultNavItems = [
-    ['label' => 'Menu', 'items' => array_values(array_filter([
-        $user->can('dashboard.view') ? ['label' => 'Dashboard', 'icon' => 'ti-layout-dashboard', 'route' => 'dashboard', 'url' => route('dashboard')] : null,
-    ]))],
-    ['label' => 'Product', 'items' => [
-        $user->canAny(['users.view', 'roles.view','permissions.view']) ? [
-            'label'    => 'Manage Product',
-            'icon'     => 'ti-users',
-            'children' => array_values(array_filter([
-                $user->can('users.view') ? [
-                'label'        => 'Category',
-                'route'        => 'users.index',
-                'url'          => route('users.index'),
-                'activeRoutes' => ['users.index', 'users.create', 'users.edit', 'users.show'],
+    [
+        'label' => 'Menu',
+        'items' => array_values(array_filter([
+            $user->can('dashboard.view') ? [
+                'label' => 'Dashboard',
+                'icon'  => 'ti-layout-dashboard',
+                'route' => 'dashboard',
+                'url'   => route('dashboard'),
+                'activeRoutes' => ['dashboard'],
             ] : null,
-                            $user->can('roles.view') ? [
-                'label'        => 'Packages',
-                'route'        => 'roles.index',
-                'url'          => route('roles.index'),
-                'activeRoutes' => ['roles.index', 'roles.create', 'roles.edit'],
+        ])),
+    ],
+
+    [
+        'label' => 'Product',
+        'items' => array_values(array_filter([
+            $user->canAny(['products.view', 'categories.view']) ? [
+                'label' => 'Manage Product',
+                'icon'  => 'ti-package',
+                'activeRoutes' => [
+                    'categories.*',
+                    'packages.*',
+                ],
+                'children' => array_values(array_filter([
+
+                    $user->can('categories.view') ? [
+                        'label' => 'Category',
+                        'route' => 'categories.index',
+                        'url'   => route('categories.index'),
+                        'activeRoutes' => [
+                            'categories.index',
+                            'categories.create',
+                            'categories.edit',
+                            'categories.show',
+                        ],
+                    ] : null,
+
+                    $user->can('packages.view') ? [
+                        'label' => 'Packages',
+                        'route' => 'packages.index',
+                        'url'   => route('packages.index'),
+                        'activeRoutes' => [
+                            'packages.index',
+                            'packages.create',
+                            'packages.edit',
+                            'packages.show',
+                        ],
+                    ] : null,
+
+                ])),
             ] : null,
-            ])),
-        ] : null,
-    ]],
-    ['label' => 'Manajemen User', 'items' => [
-        $user->canAny(['users.view', 'roles.view','permissions.view']) ? [
-            'label'    => 'Manage User',
-            'icon'     => 'ti-users',
-            'children' => array_values(array_filter([
-                $user->can('users.view') ? [
-                'label'        => 'Daftar Pengguna',
-                'route'        => 'users.index',
-                'url'          => route('users.index'),
-                'activeRoutes' => ['users.index', 'users.create', 'users.edit', 'users.show'],
+        ])),
+    ],
+
+    [
+        'label' => 'Manajemen User',
+        'items' => array_values(array_filter([
+            $user->canAny(['users.view', 'roles.view', 'permissions.view']) ? [
+                'label' => 'Manage User',
+                'icon'  => 'ti-users',
+                'activeRoutes' => [
+                    'users.*',
+                    'roles.*',
+                    'permissions.*',
+                ],
+                'children' => array_values(array_filter([
+
+                    $user->can('users.view') ? [
+                        'label' => 'Daftar Pengguna',
+                        'route' => 'users.index',
+                        'url'   => route('users.index'),
+                        'activeRoutes' => [
+                            'users.index',
+                            'users.create',
+                            'users.edit',
+                            'users.show',
+                        ],
+                    ] : null,
+
+                    $user->can('roles.view') ? [
+                        'label' => 'Role & Permission',
+                        'route' => 'roles.index',
+                        'url'   => route('roles.index'),
+                        'activeRoutes' => [
+                            'roles.index',
+                            'roles.create',
+                            'roles.edit',
+                            'roles.show',
+                        ],
+                    ] : null,
+
+                    $user->can('permissions.view') ? [
+                        'label' => 'Permission',
+                        'route' => 'permissions.index',
+                        'url'   => route('permissions.index'),
+                        'activeRoutes' => [
+                            'permissions.index',
+                            'permissions.create',
+                            'permissions.edit',
+                            'permissions.show',
+                        ],
+                    ] : null,
+
+                ])),
             ] : null,
-                            $user->can('roles.view') ? [
-                'label'        => 'Role & Permission',
-                'route'        => 'roles.index',
-                'url'          => route('roles.index'),
-                'activeRoutes' => ['roles.index', 'roles.create', 'roles.edit'],
-            ] : null,
-                            $user->can('permissions.view') ? [
-                'label'        => 'Permission',
-                'route'        => 'permissions.index',
-                'url'          => route('permissions.index'),
-                'activeRoutes' => ['permissions.index'],
-            ] : null,
-            ])),
-        ] : null,
-    ]],
+        ])),
+    ],
 ];
 
 $menu     = $navItems ?: $defaultNavItems;
@@ -69,19 +127,18 @@ $initials = collect(explode(' ', $user->name ?? 'User'))->take(2)->map(fn($w) =>
 >
     {{-- LOGO --}}
     <div class="relative flex h-[62px] items-center border-b border-stone-200 px-4">
-        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 overflow-hidden">
-            <div class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-[#E67E22]">
-                <x-application-logo class="h-5 w-5 fill-current text-orange-300" />
-            </div>
-            <span class="whitespace-nowrap text-[15px] font-semibold text-[#E67E22] transition-all duration-200"
-                :class="collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'">
-                Admin<span class="text-orange-600">Template</span>
-            </span>
+        <a href="{{ route('dashboard') }}" class="flex items-center justify-center w-full">
+            <img src="{{ asset('storage/logo.jpg') }}"
+                alt="Logo PUTP"
+                class="h-10 w-auto object-contain">
         </a>
+
         <button @click="toggle()" :title="collapsed ? 'Perluas' : 'Persempit'"
             class="absolute -right-[11px] top-1/2 -translate-y-1/2 hidden lg:flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white border border-stone-200 text-orange-600 text-xs hover:bg-orange-50 hover:border-orange-300 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-orange-400/40"
             aria-label="Toggle sidebar">
-            <i class="ti ti-chevron-left transition-transform duration-250" :class="collapsed ? 'rotate-180' : ''" aria-hidden="true"></i>
+            <i class="ti ti-chevron-left transition-transform duration-250"
+            :class="collapsed ? 'rotate-180' : ''"
+            aria-hidden="true"></i>
         </button>
     </div>
 

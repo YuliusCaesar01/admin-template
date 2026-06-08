@@ -10,54 +10,46 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'phone',
+        'user_category_id',
+        'organization_name',
     ];
 
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     *
-     * @var bool
-     */
     public $incrementing = false;
 
-    /**
-     * The data type of the primary key.
-     *
-     * @var string
-     */
     protected $keyType = 'string';
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
         ];
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(UserCategory::class);
+    }
+
+    public function isInternal(): bool
+    {
+        return $this->category?->user_type === 'internal';
+    }
+
+    public function isExternal(): bool
+    {
+        return $this->category?->user_type === 'external';
     }
 }
