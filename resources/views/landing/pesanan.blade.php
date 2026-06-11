@@ -1,4 +1,3 @@
-{{-- resources/views/pages/pesanan.blade.php --}}
 @extends('layouts.landing')
 
 @section('title', 'Pesanan Saya')
@@ -231,7 +230,7 @@
         flex-shrink: 0;
     }
 
-    .order-id { font-size: 11px; color: var(--text-muted); margin: 0 0 2px; font-family: monospace; }
+    .order-id    { font-size: 11px; color: var(--text-muted); margin: 0 0 2px; font-family: monospace; }
     .order-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin: 0; }
 
     /* Status badges */
@@ -248,14 +247,22 @@
 
     .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
 
-    .badge-pending   { background: #FEF3C7; color: #92400E; }
-    .badge-pending .badge-dot   { background: #F59E0B; }
-    .badge-process   { background: #EFF6FF; color: #1D4ED8; }
-    .badge-process .badge-dot   { background: #3B82F6; }
-    .badge-done      { background: #ECFDF5; color: #065F46; }
-    .badge-done .badge-dot      { background: #10B981; }
-    .badge-cancelled { background: #FEF2F2; color: #991B1B; }
-    .badge-cancelled .badge-dot { background: #EF4444; }
+    .badge-draft         { background: #F3F4F6; color: #374151; }
+    .badge-draft .badge-dot         { background: #9CA3AF; }
+    .badge-submit        { background: #FEF3C7; color: #92400E; }
+    .badge-submit .badge-dot        { background: #F59E0B; }
+    .badge-offered       { background: #EFF6FF; color: #1D4ED8; }
+    .badge-offered .badge-dot       { background: #3B82F6; }
+    .badge-form_required { background: #FFF7ED; color: #9A3412; }
+    .badge-form_required .badge-dot { background: #F97316; }
+    .badge-approved      { background: #F0FDF4; color: #166534; }
+    .badge-approved .badge-dot      { background: #22C55E; }
+    .badge-processing    { background: #EFF6FF; color: #1D4ED8; }
+    .badge-processing .badge-dot    { background: #3B82F6; }
+    .badge-done          { background: #ECFDF5; color: #065F46; }
+    .badge-done .badge-dot          { background: #10B981; }
+    .badge-rejected      { background: #FEF2F2; color: #991B1B; }
+    .badge-rejected .badge-dot      { background: #EF4444; }
 
     .order-card-body {
         padding: 14px 20px;
@@ -375,12 +382,7 @@
         border-radius: 14px;
     }
 
-    .empty-icon {
-        font-size: 40px;
-        color: var(--text-muted);
-        margin-bottom: 16px;
-    }
-
+    .empty-icon { font-size: 40px; color: var(--text-muted); margin-bottom: 16px; }
     .empty-state h3 { font-size: 15px; font-weight: 600; color: var(--text-primary); margin: 0 0 6px; }
     .empty-state p  { font-size: 13px; color: var(--text-secondary); margin: 0 0 24px; }
 
@@ -428,86 +430,54 @@
      LOGGED-IN STATE — Pesanan Saya
 ════════════════════════════════ --}}
 
-{{-- Data dummy --}}
 @php
-$orders = [
-    [
-        'id'         => 'ORD-2024-00312',
-        'title'      => 'Kuat Tekan Beton',
-        'type'       => 'beton',
-        'icon'       => 'ti-cube',
-        'status'     => 'done',
-        'status_label' => 'Selesai',
-        'tanggal'    => '12 Mei 2025',
-        'estimasi'   => '14 Hari Kerja',
-        'parameter'  => '3 Parameter',
-        'biaya'      => 'Rp 450.000',
-        'progress'   => 100,
-        'progress_text' => 'Laporan tersedia',
-    ],
-    [
-        'id'         => 'ORD-2025-00089',
-        'title'      => 'Analisis Tanah Lengkap',
-        'type'       => 'tanah',
-        'icon'       => 'ti-layers-difference',
-        'status'     => 'process',
-        'status_label' => 'Dalam Pengujian',
-        'tanggal'    => '28 Mei 2025',
-        'estimasi'   => '3–5 Hari Kerja',
-        'parameter'  => '5 Parameter',
-        'biaya'      => 'Rp 780.000',
-        'progress'   => 60,
-        'progress_text' => 'Pengujian berjalan',
-    ],
-    [
-        'id'         => 'ORD-2025-00104',
-        'title'      => 'Uji Slump & Berat Jenis',
-        'type'       => 'beton',
-        'icon'       => 'ti-cube',
-        'status'     => 'pending',
-        'status_label' => 'Menunggu Sampel',
-        'tanggal'    => '2 Jun 2025',
-        'estimasi'   => '1–2 Hari Kerja',
-        'parameter'  => '2 Parameter',
-        'biaya'      => 'Rp 210.000',
-        'progress'   => 15,
-        'progress_text' => 'Menunggu sampel masuk',
-    ],
-    [
-        'id'         => 'ORD-2025-00071',
-        'title'      => 'Uji Tarik Baja',
-        'type'       => 'baja',
-        'icon'       => 'ti-bolt',
-        'status'     => 'done',
-        'status_label' => 'Selesai',
-        'tanggal'    => '15 Apr 2025',
-        'estimasi'   => '3–5 Hari Kerja',
-        'parameter'  => '2 Parameter',
-        'biaya'      => 'Rp 320.000',
-        'progress'   => 100,
-        'progress_text' => 'Laporan tersedia',
-    ],
-    [
-        'id'         => 'ORD-2025-00055',
-        'title'      => 'Analisis Aspal Marshall',
-        'type'       => 'aspal',
-        'icon'       => 'ti-road',
-        'status'     => 'cancelled',
-        'status_label' => 'Dibatalkan',
-        'tanggal'    => '3 Mar 2025',
-        'estimasi'   => '3–5 Hari Kerja',
-        'parameter'  => '4 Parameter',
-        'biaya'      => 'Rp 560.000',
-        'progress'   => 0,
-        'progress_text' => 'Pesanan dibatalkan',
-    ],
+/**
+ * Helper: mapping status Order model → badge CSS class, label, progress, teks progres
+ * Sesuai konstanta di Order::STATUS_*
+ */
+$statusMap = [
+    'draft'         => ['badge' => 'draft',         'label' => 'Draft',             'progress' => 5,   'text' => 'Belum disubmit'],
+    'submit'        => ['badge' => 'submit',         'label' => 'Menunggu Review',   'progress' => 20,  'text' => 'Menunggu konfirmasi admin'],
+    'offered'       => ['badge' => 'offered',        'label' => 'Ada Penawaran',     'progress' => 35,  'text' => 'Silakan tinjau penawaran'],
+    'form_required' => ['badge' => 'form_required',  'label' => 'Perlu Kelengkapan', 'progress' => 30,  'text' => 'Lengkapi data yang diminta'],
+    'approved'      => ['badge' => 'approved',       'label' => 'Disetujui',         'progress' => 55,  'text' => 'Menunggu jadwal pengujian'],
+    'processing'    => ['badge' => 'processing',     'label' => 'Dalam Pengujian',   'progress' => 75,  'text' => 'Pengujian sedang berjalan'],
+    'done'          => ['badge' => 'done',           'label' => 'Selesai',           'progress' => 100, 'text' => 'Laporan tersedia'],
+    'rejected'      => ['badge' => 'rejected',       'label' => 'Ditolak',           'progress' => 0,   'text' => 'Pesanan ditolak'],
 ];
 
+/**
+ * Helper: icon berdasarkan tipe order
+ */
+$typeIcon = [
+    'internal' => 'ti-building',
+    'external' => 'ti-world',
+];
+
+/**
+ * Hitung summary dari koleksi $orders (sudah dipass dari UserOrderController)
+ * $orders = LengthAwarePaginator — gunakan ->getCollection() untuk iterasi
+ */
+$collection = $orders->getCollection();
+
 $summary = [
-    'total'   => count($orders),
-    'proses'  => collect($orders)->where('status', 'process')->count(),
-    'selesai' => collect($orders)->where('status', 'done')->count(),
-    'pending' => collect($orders)->where('status', 'pending')->count(),
+    'total'      => $orders->total(),
+    'processing' => $collection->whereIn('status', ['approved', 'processing'])->count(),
+    'done'       => $collection->where('status', 'done')->count(),
+    'pending'    => $collection->whereIn('status', ['draft', 'submit', 'offered', 'form_required'])->count(),
+];
+
+/**
+ * Tab filter — key harus cocok dengan nilai status di DB
+ * 'semua' adalah kasus khusus (tidak difilter)
+ */
+$tabs = [
+    ['key' => 'semua',      'label' => 'Semua',           'count' => $orders->total()],
+    ['key' => 'draft',      'label' => 'Draft',           'count' => $collection->where('status','draft')->count()],
+    ['key' => 'submit',     'label' => 'Menunggu Review', 'count' => $collection->where('status','submit')->count()],
+    ['key' => 'processing', 'label' => 'Dalam Pengujian', 'count' => $collection->where('status','processing')->count()],
+    ['key' => 'done',       'label' => 'Selesai',         'count' => $collection->where('status','done')->count()],
+    ['key' => 'rejected',   'label' => 'Ditolak',         'count' => $collection->where('status','rejected')->count()],
 ];
 @endphp
 
@@ -519,7 +489,7 @@ $summary = [
             <h1>Pesanan Saya</h1>
             <p>Halo, <strong>{{ auth()->user()->name }}</strong> — berikut riwayat pengujian Anda.</p>
         </div>
-        <a href="#" class="btn-primary" style="width:auto;padding:10px 20px;">
+        <a href="{{ route('user-orders.create') }}" class="btn-primary" style="width:auto;padding:10px 20px;">
             <i class="ti ti-plus" aria-hidden="true"></i>
             Ajukan Pengujian Baru
         </a>
@@ -532,140 +502,187 @@ $summary = [
             <div class="s-label">Total Pesanan</div>
         </div>
         <div class="summary-card highlight">
-            <div class="s-num">{{ $summary['proses'] }}</div>
+            <div class="s-num">{{ $summary['processing'] }}</div>
             <div class="s-label">Sedang Diproses</div>
         </div>
         <div class="summary-card">
-            <div class="s-num">{{ $summary['selesai'] }}</div>
+            <div class="s-num">{{ $summary['done'] }}</div>
             <div class="s-label">Selesai</div>
         </div>
         <div class="summary-card">
             <div class="s-num">{{ $summary['pending'] }}</div>
-            <div class="s-label">Menunggu Sampel</div>
+            <div class="s-label">Menunggu Tindak Lanjut</div>
         </div>
     </div>
 
-    {{-- Filter Tabs --}}
-    <div class="filter-tabs animate-in delay-2" x-data="{ active: 'semua' }">
-        @php
-        $tabs = [
-            ['key' => 'semua',     'label' => 'Semua',          'count' => $summary['total']],
-            ['key' => 'pending',   'label' => 'Menunggu Sampel','count' => $summary['pending']],
-            ['key' => 'process',   'label' => 'Dalam Pengujian','count' => $summary['proses']],
-            ['key' => 'done',      'label' => 'Selesai',        'count' => $summary['selesai']],
-            ['key' => 'cancelled', 'label' => 'Dibatalkan',     'count' => collect($orders)->where('status','cancelled')->count()],
-        ];
-        @endphp
+    {{-- Filter Tabs + Order List (Alpine shared store) --}}
+    <div x-data x-init="$store.orderFilter.active = '{{ request('status', 'semua') }}'">
 
-        @foreach ($tabs as $tab)
-        <button
-            class="filter-tab"
-            :class="{ 'active': active === '{{ $tab['key'] }}' }"
-            @click="active = '{{ $tab['key'] }}'"
-        >
-            {{ $tab['label'] }}
-            <span class="tab-count">{{ $tab['count'] }}</span>
-        </button>
-        @endforeach
+        <div class="filter-tabs animate-in delay-2">
+            @foreach ($tabs as $tab)
+            <button
+                class="filter-tab"
+                :class="{ 'active': $store.orderFilter.active === '{{ $tab['key'] }}' }"
+                @click="$store.orderFilter.active = '{{ $tab['key'] }}'"
+                type="button"
+            >
+                {{ $tab['label'] }}
+                <span class="tab-count">{{ $tab['count'] }}</span>
+            </button>
+            @endforeach
+        </div>
 
         {{-- Order List --}}
-        <div class="order-list" style="display:contents;">
-        </div>
-    </div>
+        <div class="order-list animate-in delay-3">
 
-    {{-- Orders --}}
-    <div class="order-list animate-in delay-3" x-data="{ active: 'semua' }">
+            @forelse ($orders as $order)
+            @php
+                $st      = $statusMap[$order->status] ?? $statusMap['draft'];
+                $icon    = $typeIcon[$order->type]    ?? 'ti-file';
+                $isDone  = $order->status === 'done';
+                $canSubmit = $order->status === 'draft';
 
-        {{-- re-declare active in parent scope via shared component — simple approach: use window var --}}
-        <script>
-            document.addEventListener('alpine:init', () => {
-                Alpine.store('orderFilter', { active: 'semua' });
-            });
-        </script>
+                // Grand total dari offer
+                $total = $order->relationLoaded('offer') && $order->offer
+                    ? $order->offer->details->sum(fn($d) => $d->qty * $d->price)
+                    : 0;
 
-        @foreach ($orders as $i => $order)
-        <div class="order-card"
-             x-data
-             x-show="
-                $store.orderFilter.active === 'semua' ||
-                $store.orderFilter.active === '{{ $order['status'] }}'
-             "
-             x-transition>
+                // Tanggal pengajuan
+                $tanggal = $order->sent_at
+                    ? $order->sent_at->translatedFormat('d M Y')
+                    : $order->created_at->translatedFormat('d M Y');
 
-            <div class="order-card-top">
-                <div class="order-card-top-left">
-                    <div class="order-type-icon">
-                        <i class="ti {{ $order['icon'] }}" aria-hidden="true"></i>
+                // Jumlah parameter (detail offer)
+                $paramCount = ($order->relationLoaded('offer') && $order->offer)
+                    ? $order->offer->details->count()
+                    : 0;
+            @endphp
+
+            <div class="order-card"
+                 x-show="
+                    $store.orderFilter.active === 'semua' ||
+                    $store.orderFilter.active === '{{ $order->status }}'
+                 "
+                 x-transition>
+
+                {{-- Top --}}
+                <div class="order-card-top">
+                    <div class="order-card-top-left">
+                        <div class="order-type-icon">
+                            <i class="ti {{ $icon }}" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <p class="order-id">{{ $order->order_code }}</p>
+                            <p class="order-title">
+                                {{ $order->tujuan_pengujian ?? 'Tanpa keterangan tujuan' }}
+                            </p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="order-id">{{ $order['id'] }}</p>
-                        <p class="order-title">{{ $order['title'] }}</p>
+                    <span class="badge badge-{{ $st['badge'] }}">
+                        <span class="badge-dot"></span>
+                        {{ $st['label'] }}
+                    </span>
+                </div>
+
+                {{-- Body --}}
+                <div class="order-card-body">
+                    <div class="order-meta-item">
+                        <div class="meta-label">Tanggal Ajuan</div>
+                        <div class="meta-value">{{ $tanggal }}</div>
+                    </div>
+                    <div class="order-meta-item">
+                        <div class="meta-label">Tipe Order</div>
+                        <div class="meta-value">{{ ucfirst($order->type) }}</div>
+                    </div>
+                    <div class="order-meta-item">
+                        <div class="meta-label">Parameter Uji</div>
+                        <div class="meta-value">
+                            {{ $paramCount > 0 ? $paramCount . ' Parameter' : '—' }}
+                        </div>
+                    </div>
+                    <div class="order-meta-item">
+                        <div class="meta-label">Total Biaya</div>
+                        <div class="meta-value">
+                            {{ $total > 0 ? 'Rp ' . number_format($total, 0, ',', '.') : '—' }}
+                        </div>
                     </div>
                 </div>
-                <span class="badge badge-{{ $order['status'] }}">
-                    <span class="badge-dot"></span>
-                    {{ $order['status_label'] }}
-                </span>
+
+                {{-- Footer --}}
+                <div class="order-card-footer">
+                    <div class="order-progress">
+                        <span class="progress-label">{{ $st['text'] }}</span>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" style="width: {{ $st['progress'] }}%"></div>
+                        </div>
+                        <span class="progress-label">{{ $st['progress'] }}%</span>
+                    </div>
+
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        {{-- Submit jika masih draft --}}
+                        @if ($canSubmit)
+                        <form method="POST" action="{{ route('user-orders.submit', $order) }}"
+                              onsubmit="return confirm('Yakin ingin mengajukan pesanan ini?')">
+                            @csrf
+                            <button type="submit" class="btn-detail" style="color:#166534;background:#F0FDF4;border-color:#86EFAC;">
+                                <i class="ti ti-send" aria-hidden="true"></i>
+                                Submit
+                            </button>
+                        </form>
+                        @endif
+
+                        {{-- Tombol utama --}}
+                        <a href="{{ route('user-orders.show', $order) }}" class="btn-detail">
+                            @if ($isDone)
+                                <i class="ti ti-download" aria-hidden="true"></i>
+                                Unduh Laporan
+                            @else
+                                <i class="ti ti-eye" aria-hidden="true"></i>
+                                Lihat Detail
+                            @endif
+                        </a>
+                    </div>
+                </div>
+
             </div>
+            @empty
 
-            <div class="order-card-body">
-                <div class="order-meta-item">
-                    <div class="meta-label">Tanggal Ajuan</div>
-                    <div class="meta-value">{{ $order['tanggal'] }}</div>
-                </div>
-                <div class="order-meta-item">
-                    <div class="meta-label">Estimasi Waktu</div>
-                    <div class="meta-value">{{ $order['estimasi'] }}</div>
-                </div>
-                <div class="order-meta-item">
-                    <div class="meta-label">Parameter Uji</div>
-                    <div class="meta-value">{{ $order['parameter'] }}</div>
-                </div>
-                <div class="order-meta-item">
-                    <div class="meta-label">Total Biaya</div>
-                    <div class="meta-value">{{ $order['biaya'] }}</div>
-                </div>
-            </div>
-
-            <div class="order-card-footer">
-                <div class="order-progress">
-                    <span class="progress-label">{{ $order['progress_text'] }}</span>
-                    <div class="progress-bar-wrap">
-                        <div class="progress-bar-fill" style="width: {{ $order['progress'] }}%"></div>
-                    </div>
-                    <span class="progress-label">{{ $order['progress'] }}%</span>
-                </div>
-                <a href="#" class="btn-detail">
-                    @if ($order['status'] === 'done')
-                        <i class="ti ti-download" aria-hidden="true"></i>
-                        Unduh Laporan
-                    @else
-                        <i class="ti ti-eye" aria-hidden="true"></i>
-                        Lihat Detail
-                    @endif
+            {{-- Empty State --}}
+            <div class="empty-state" x-show="$store.orderFilter.active === 'semua'">
+                <div class="empty-icon"><i class="ti ti-clipboard-x" aria-hidden="true"></i></div>
+                <h3>Belum Ada Pesanan</h3>
+                <p>Anda belum pernah mengajukan pesanan pengujian. Mulai ajukan sekarang.</p>
+                <a href="{{ route('user-orders.create') }}" class="btn-primary" style="width:auto;display:inline-flex;">
+                    <i class="ti ti-plus" aria-hidden="true"></i>
+                    Ajukan Pengujian Pertama
                 </a>
             </div>
+
+            @endforelse
+
         </div>
-        @endforeach
 
-    </div>
+        {{-- Pagination --}}
+        @if ($orders->hasPages())
+        <div style="margin-top:24px;">
+            {{ $orders->links() }}
+        </div>
+        @endif
 
-</div>
+    </div>{{-- end x-data --}}
 
-{{-- Sync filter tabs dengan order list via Alpine store --}}
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.filter-tab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const keys = ['semua','pending','process','done','cancelled'];
-                const idx = [...document.querySelectorAll('.filter-tab')].indexOf(btn);
-                if (window.Alpine) Alpine.store('orderFilter').active = keys[idx];
-            });
-        });
-    });
-</script>
+</div>{{-- end orders-inner --}}
 
 @endguest
-
 </div>
+
+{{-- Alpine Store --}}
+@push('scripts')
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('orderFilter', { active: 'semua' });
+    });
+</script>
+@endpush
+
 @endsection

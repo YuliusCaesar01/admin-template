@@ -20,7 +20,8 @@
                 <p class="text-sm font-medium text-slate-700">Informasi Akun</p>
             </div>
 
-            <form method="POST" action="{{ route('users.store') }}" class="p-6 space-y-5">
+            <form method="POST" action="{{ route('users.store') }}" class="p-6 space-y-5"
+                  x-data="{ role: '{{ old('role', '') }}', isAdmin() { return this.role === 'admin' } }">
                 @csrf
 
                 {{-- Nama --}}
@@ -69,13 +70,13 @@
                     </label>
                     <div class="relative">
                         <i class="ti ti-shield absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"></i>
-                        <select id="role" name="role"
+                        <select id="role" name="role" x-model="role"
                                 class="w-full appearance-none rounded-xl border py-2.5 pl-9 pr-9 text-sm text-stone-800 transition focus:outline-none focus:ring-2
                                        {{ $errors->has('role') ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100' : 'border-stone-200 bg-stone-50 focus:border-[#E67E22] focus:bg-white focus:ring-[#E67E22]/10' }}">
                             <option value="" disabled selected>Pilih role...</option>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->name }}" {{ old('role') === $role->name ? 'selected' : '' }}>
-                                    {{ ucfirst($role->name) }}
+                            @foreach ($roles as $r)
+                                <option value="{{ $r->name }}" {{ old('role') === $r->name ? 'selected' : '' }}>
+                                    {{ ucfirst($r->name) }}
                                 </option>
                             @endforeach
                         </select>
@@ -86,6 +87,93 @@
                             <i class="ti ti-alert-circle"></i> {{ $message }}
                         </p>
                     @enderror
+                </div>
+
+                {{-- Fields tambahan: hanya untuk non-admin --}}
+                <template x-if="role !== '' && !isAdmin()">
+                    <div class="space-y-5">
+
+                        {{-- Divider --}}
+                        <div class="flex items-center gap-3 py-1">
+                            <div class="h-px flex-1 bg-slate-100"></div>
+                            <p class="text-xs text-stone-400">Informasi tambahan</p>
+                            <div class="h-px flex-1 bg-slate-100"></div>
+                        </div>
+
+                        {{-- Nomor Telepon --}}
+                        <div class="space-y-1.5">
+                            <label for="phone" class="block text-sm font-medium text-slate-700">
+                                Nomor Telepon
+                            </label>
+                            <div class="relative">
+                                <i class="ti ti-phone absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                                <input type="text" id="phone" name="phone" value="{{ old('phone') }}"
+                                       placeholder="Contoh: 08123456789"
+                                       class="w-full rounded-xl border py-2.5 pl-9 pr-4 text-sm text-stone-800 placeholder-stone-400 transition focus:outline-none focus:ring-2
+                                              {{ $errors->has('phone') ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100' : 'border-stone-200 bg-stone-50 focus:border-[#E67E22] focus:bg-white focus:ring-[#E67E22]/10' }}">
+                            </div>
+                            @error('phone')
+                                <p class="flex items-center gap-1.5 text-xs text-red-500">
+                                    <i class="ti ti-alert-circle"></i> {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        {{-- Kategori User --}}
+                        <div class="space-y-1.5">
+                            <label for="user_category_id" class="block text-sm font-medium text-slate-700">
+                                Kategori User <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i class="ti ti-tag absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                                <select id="user_category_id" name="user_category_id"
+                                        class="w-full appearance-none rounded-xl border py-2.5 pl-9 pr-9 text-sm text-stone-800 transition focus:outline-none focus:ring-2
+                                               {{ $errors->has('user_category_id') ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100' : 'border-stone-200 bg-stone-50 focus:border-[#E67E22] focus:bg-white focus:ring-[#E67E22]/10' }}">
+                                    <option value="" disabled selected>Pilih kategori...</option>
+                                    @foreach ($userCategories as $category)
+                                        <option value="{{ $category->id }}" {{ old('user_category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->category_name }}
+                                            ({{ ucfirst($category->user_type) }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <i class="ti ti-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none"></i>
+                            </div>
+                            @error('user_category_id')
+                                <p class="flex items-center gap-1.5 text-xs text-red-500">
+                                    <i class="ti ti-alert-circle"></i> {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        {{-- Nama Organisasi --}}
+                        <div class="space-y-1.5">
+                            <label for="organization_name" class="block text-sm font-medium text-slate-700">
+                                Nama Organisasi / Instansi
+                            </label>
+                            <div class="relative">
+                                <i class="ti ti-building absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                                <input type="text" id="organization_name" name="organization_name"
+                                       value="{{ old('organization_name') }}"
+                                       placeholder="Contoh: PT Contoh Jaya"
+                                       class="w-full rounded-xl border py-2.5 pl-9 pr-4 text-sm text-stone-800 placeholder-stone-400 transition focus:outline-none focus:ring-2
+                                              {{ $errors->has('organization_name') ? 'border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-100' : 'border-stone-200 bg-stone-50 focus:border-[#E67E22] focus:bg-white focus:ring-[#E67E22]/10' }}">
+                            </div>
+                            @error('organization_name')
+                                <p class="flex items-center gap-1.5 text-xs text-red-500">
+                                    <i class="ti ti-alert-circle"></i> {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                    </div>
+                </template>
+
+                {{-- Divider password --}}
+                <div class="flex items-center gap-3 py-1">
+                    <div class="h-px flex-1 bg-slate-100"></div>
+                    <p class="text-xs text-stone-400">Keamanan akun</p>
+                    <div class="h-px flex-1 bg-slate-100"></div>
                 </div>
 
                 {{-- Password --}}
@@ -135,7 +223,7 @@
                         Batal
                     </a>
                     <button type="submit"
-                            class="inline-flex items-center gap-2 rounded-xl bg-[#E67E22] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#E67E22] transition">
+                            class="inline-flex items-center gap-2 rounded-xl bg-[#E67E22] px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-[#CF6D17] transition">
                         <i class="ti ti-user-plus text-base"></i>
                         Simpan User
                     </button>

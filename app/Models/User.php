@@ -40,7 +40,11 @@ class User extends Authenticatable
 
     public function category()
     {
-        return $this->belongsTo(UserCategory::class);
+        return $this->belongsTo(
+            UserCategory::class,
+            'user_category_id',
+            'id'
+        );
     }
 
     public function isInternal(): bool

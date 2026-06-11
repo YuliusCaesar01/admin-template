@@ -34,7 +34,7 @@
                 <li><a href="{{ route('layanan') }}">Layanan</a></li>
                 <li><a href="{{ route('tentang') }}">Tentang Kami</a></li>
                 <li><a href="{{ route('kontak') }}">Kontak</a></li>
-                <li><a href="{{ route('pesanan') }}">Pesanan Saya</a></li>
+                <li><a href="{{ route('user-orders.index') }}">Pesanan Saya</a></li>
             </ul>
         </div>
 

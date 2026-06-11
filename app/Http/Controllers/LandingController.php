@@ -25,10 +25,6 @@ class LandingController extends Controller
         return view('landing.layanan', compact('categories'));
     }
 
-    public function pesanan()
-    {
-        return view('landing.pesanan');
-    }
 
     public function tentang()
     {

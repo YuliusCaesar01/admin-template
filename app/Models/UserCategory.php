@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class UserCategory extends Model
 {
+
+    protected $primaryKey = 'category_id';
+    
     use HasUuids;
 
     protected $fillable = [

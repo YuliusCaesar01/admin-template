@@ -36,9 +36,9 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('pesanan') }}"
-                   class="{{ request()->routeIs('pesanan') ? 'active' : '' }}">
-                    Pesanan Saya
+                <a href="{{ route('user-orders.index') }}"
+                    class="{{ request()->routeIs('user-orders.*') ? 'active' : '' }}">
+                        Pesanan Saya
                 </a>
             </li>
         </ul>
@@ -60,10 +60,12 @@
                             <small>{{ auth()->user()->email }}</small>
                         </div>
 
+                        @can('dashboard.view')
                         <a href="{{ url('/dashboard') }}">
                             <i class="ti ti-layout-dashboard"></i>
                             Dashboard
                         </a>
+                        @endcan
 
                         <a href="{{ route('profile.edit') }}">
                             <i class="ti ti-user"></i>
@@ -118,18 +120,20 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('pesanan') }}"
-                   class="{{ request()->routeIs('pesanan') ? 'active' : '' }}">
-                    Pesanan Saya
+                <a href="{{ route('user-orders.index') }}"
+                    class="{{ request()->routeIs('user-orders.*') ? 'active' : '' }}">
+                        Pesanan Saya
                 </a>
             </li>
         </ul>
         <div class="mobile-menu-actions">
             @auth
+                @can('dashboard.view')
                 <a href="{{ url('/dashboard') }}" class="btn-primary">
                     <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
                     Dashboard
                 </a>
+                @endcan
             @else
                 <a href="{{ route('login') }}" class="btn-primary">
                     <i class="ti ti-login" aria-hidden="true"></i>

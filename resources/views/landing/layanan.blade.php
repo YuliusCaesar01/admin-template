@@ -105,6 +105,75 @@
         max-width: 560px;
     }
 
+    /* ─── Cart Float Bar ─────────────────────────────────── */
+    .cart-float {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        z-index: 999;
+        background: var(--text-primary);
+        color: #fff;
+        border-radius: 14px;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+        opacity: 0;
+        pointer-events: none;
+        white-space: nowrap;
+    }
+    .cart-float.visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .cart-float-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .cart-float-count {
+        background: var(--orange-primary);
+        color: #fff;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+    .cart-float-text {
+        font-size: 13px;
+        font-weight: 500;
+    }
+    .cart-float-text span {
+        color: var(--orange-accent);
+        font-weight: 700;
+    }
+    .cart-float-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: var(--orange-primary);
+        color: #fff;
+        border: none;
+        border-radius: 9px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background .15s;
+        flex-shrink: 0;
+    }
+    .cart-float-btn:hover { background: var(--orange-hover); color: #fff; }
+
     /* ─── Tab + Slide Layout ────────────────────────────── */
     .layanan-wrapper {
         margin-top: 32px;
@@ -286,14 +355,14 @@
         align-items: center;
         justify-content: space-between;
         gap: 8px;
-        flex-wrap: wrap;
     }
+    .package-price-wrap { line-height: 1; }
     .package-price-label {
         display: block;
         font-size: 10px;
         font-weight: 400;
         color: var(--text-muted);
-        margin-bottom: 1px;
+        margin-bottom: 2px;
     }
     .package-price {
         font-size: 14px;
@@ -313,6 +382,39 @@
     }
     .pkg-badge.active  { background: #D1FAE5; color: #065F46; }
     .pkg-badge.inactive{ background: var(--divider); color: var(--text-muted); }
+
+    /* ── Tombol Tambah ke Keranjang ── */
+    .btn-add-cart {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 6px 12px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--orange-active);
+        background: var(--orange-light);
+        border: 1px solid var(--orange-border);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all .15s;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .btn-add-cart:hover {
+        background: var(--orange-primary);
+        color: #fff;
+        border-color: var(--orange-primary);
+    }
+    .btn-add-cart.added {
+        background: #D1FAE5;
+        color: #065F46;
+        border-color: #A7F3D0;
+    }
+    .btn-add-cart.added:hover {
+        background: #059669;
+        color: #fff;
+        border-color: #059669;
+    }
 
     /* Unavailable card */
     .package-card.unavailable { opacity: .58; }
@@ -406,6 +508,7 @@
         .tab-btn { padding: 11px 14px; font-size: 12px; }
         .slide-nav { display: flex; }
         .page-hero h1 { font-size: 21px; }
+        .cart-float { width: calc(100% - 32px); }
     }
     @media (max-width: 420px) {
         .packages-grid { grid-template-columns: 1fr; }
@@ -442,8 +545,7 @@
         </div>
         <h2 class="section-title">Pilih Layanan yang Anda Butuhkan</h2>
         <p class="section-subtitle">
-            Kami menyediakan berbagai paket pengujian material. Klik kategori di bawah
-            untuk melihat paket yang tersedia.
+            Pilih paket pengujian yang Anda butuhkan, masukkan ke keranjang, lalu ajukan pesanan sekaligus.
         </p>
 
         @if($categories->isEmpty())
@@ -458,8 +560,14 @@
         @else
 
             @php
-                // Filter hanya kategori yang punya paket
                 $validCategories = $categories->filter(fn($c) => $c->packages->isNotEmpty())->values();
+
+                // ID package yang sudah ada di session cart
+                $cartIds = array_keys(session()->get('cart', []));
+
+                // Total item di keranjang
+                $cartCount = collect(session()->get('cart', []))->sum('qty');
+                $cartTotal = collect(session()->get('cart', []))->sum(fn($i) => $i['price'] * $i['qty']);
             @endphp
 
             @if($validCategories->isEmpty())
@@ -504,9 +612,10 @@
                                 aria-labelledby="tab-{{ $idx }}"
                             >
                                 <div class="packages-grid">
-                                    @foreach($category->packages as $i => $package)
+                                    @foreach($category->packages as $package)
                                         @php
-                                            $isActive = $package->is_active;
+                                            $isActive  = $package->is_active;
+                                            $inCart    = in_array($package->id, $cartIds);
                                         @endphp
                                         <article
                                             class="package-card {{ !$isActive ? 'unavailable' : '' }}"
@@ -540,12 +649,29 @@
                                                 @endif
 
                                                 <div class="package-footer">
-
-                                                    @if($isActive)
-                                                        <span class="pkg-badge active">
-                                                            <i class="ti ti-check" aria-hidden="true"></i>
-                                                            Tersedia
+                                                    {{-- Harga --}}
+                                                    <div class="package-price-wrap">
+                                                        <span class="package-price-label">Estimasi biaya</span>
+                                                        <span class="package-price">
+                                                            Rp {{ number_format($package->price, 0, ',', '.') }}
                                                         </span>
+                                                    </div>
+
+                                                    {{-- Tombol tambah keranjang --}}
+                                                    @if($isActive)
+                                                        <form method="POST" action="{{ route('cart.add') }}">
+                                                            @csrf
+                                                            <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                                            <input type="hidden" name="qty" value="1">
+                                                            <button
+                                                                type="submit"
+                                                                class="btn-add-cart {{ $inCart ? 'added' : '' }}"
+                                                                title="{{ $inCart ? 'Sudah di keranjang, klik untuk tambah lagi' : 'Tambah ke keranjang' }}"
+                                                            >
+                                                                <i class="ti {{ $inCart ? 'ti-check' : 'ti-shopping-cart-plus' }}" aria-hidden="true"></i>
+                                                                {{ $inCart ? 'Ditambahkan' : 'Keranjang' }}
+                                                            </button>
+                                                        </form>
                                                     @else
                                                         <span class="pkg-badge inactive">
                                                             Tidak tersedia
@@ -561,7 +687,7 @@
 
                     </div>{{-- /.tab-panels --}}
 
-                    {{-- ── Mobile prev/next (shown via CSS on small screens) ── --}}
+                    {{-- ── Mobile prev/next ── --}}
                     <div class="slide-nav" id="slideNav">
                         <button class="slide-arrow" id="btnPrev" type="button" disabled>
                             <i class="ti ti-chevron-left" aria-hidden="true"></i>
@@ -583,9 +709,14 @@
 
         {{-- CTA --}}
         <div class="cta-row">
-            <a href="{{ route('login') }}" class="btn-primary-lg">
-                <i class="ti ti-login" aria-hidden="true"></i>
-                Ajukan Pengujian Sekarang
+            <a href="{{ route('cart.index') }}" class="btn-primary-lg">
+                <i class="ti ti-shopping-cart" aria-hidden="true"></i>
+                Lihat Keranjang
+                @if($cartCount > 0)
+                    <span style="background:rgba(255,255,255,0.25);border-radius:20px;padding:1px 8px;font-size:11px;">
+                        {{ $cartCount }}
+                    </span>
+                @endif
             </a>
             <a href="{{ route('kontak') }}" class="btn-outline-lg">
                 <i class="ti ti-message-circle" aria-hidden="true"></i>
@@ -595,6 +726,22 @@
 
     </div>
 </section>
+
+{{-- ── Cart Float Bar (muncul saat keranjang tidak kosong) ── --}}
+@if($cartCount > 0)
+<div class="cart-float visible" id="cartFloat" role="status" aria-live="polite">
+    <div class="cart-float-info">
+        <div class="cart-float-count">{{ $cartCount }}</div>
+        <div class="cart-float-text">
+            item dipilih 
+        </div>
+    </div>
+    <a href="{{ route('cart.index') }}" class="cart-float-btn">
+        <i class="ti ti-arrow-right" aria-hidden="true"></i>
+        Lihat Keranjang
+    </a>
+</div>
+@endif
 
 @endsection
 
@@ -610,36 +757,29 @@
     let current   = 0;
 
     function goTo(idx) {
-        // deactivate old
         tabs[current].classList.remove('active');
         tabs[current].setAttribute('aria-selected', 'false');
         panels[current].classList.remove('active');
 
-        // activate new
         current = idx;
         tabs[current].classList.add('active');
         tabs[current].setAttribute('aria-selected', 'true');
         panels[current].classList.add('active');
 
-        // scroll tab into view (mobile)
         tabs[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 
-        // update mobile nav
         if (btnPrev)   btnPrev.disabled   = current === 0;
         if (btnNext)   btnNext.disabled   = current === total - 1;
         if (indicator) indicator.textContent = (current + 1) + ' / ' + total;
     }
 
-    // Tab click
     tabs.forEach(function (tab, idx) {
         tab.addEventListener('click', function () { goTo(idx); });
     });
 
-    // Mobile arrows
     if (btnPrev) btnPrev.addEventListener('click', function () { if (current > 0) goTo(current - 1); });
     if (btnNext) btnNext.addEventListener('click', function () { if (current < total - 1) goTo(current + 1); });
 
-    // Keyboard arrow navigation on tab bar
     tabs.forEach(function (tab, idx) {
         tab.addEventListener('keydown', function (e) {
             if (e.key === 'ArrowRight' && idx < total - 1) { tabs[idx + 1].focus(); goTo(idx + 1); }
@@ -647,9 +787,17 @@
         });
     });
 
-    // Init state
     if (btnPrev) btnPrev.disabled = true;
     if (btnNext) btnNext.disabled = total <= 1;
+
+    // Flash efek tombol add setelah redirect back
+    @if(session('cart_success'))
+    const cartFloat = document.getElementById('cartFloat');
+    if (cartFloat) {
+        cartFloat.style.background = '#059669';
+        setTimeout(() => { cartFloat.style.background = ''; }, 1500);
+    }
+    @endif
 })();
 </script>
 @endpush

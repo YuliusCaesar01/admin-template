@@ -40,6 +40,7 @@
         <main class="flex-1 overflow-y-auto bg-stone-50 p-6">
             {{ $slot }}
         </main>
+        <x-footer /> 
     </div>
 </div>
 

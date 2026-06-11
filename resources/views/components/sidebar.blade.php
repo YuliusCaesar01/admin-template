@@ -1,4 +1,3 @@
-{{-- x-sidebar — Light Theme (putih dominan, aksen biru tua) --}}
 @props(['navItems' => []])
 
 @php
@@ -16,6 +15,25 @@ $defaultNavItems = [
                 'route' => 'dashboard',
                 'url'   => route('dashboard'),
                 'activeRoutes' => ['dashboard'],
+            ] : null,
+        ])),
+    ],
+
+    
+    [
+        'label' => 'Order',
+        'items' => array_values(array_filter([
+            $user->can('order.view') ? [
+                'label' => 'Orders',
+                'icon'  => 'ti-shopping-cart',
+                'route' => 'orders.index',
+                'url'   => route('orders.index'),
+                'activeRoutes' => [
+                    'orders.index',
+                    'orders.create',
+                    'orders.edit',
+                    'orders.show',
+                ],
             ] : null,
         ])),
     ],
@@ -57,6 +75,25 @@ $defaultNavItems = [
                     ] : null,
 
                 ])),
+            ] : null,
+        ])),
+    ],
+
+    
+    [
+        'label' => 'Customer',
+        'items' => array_values(array_filter([
+            $user->can('customers.view') ? [
+                'label' => 'Customer',
+                'icon'  => 'ti-user',
+                'route' => 'customers.index',
+                'url'   => route('customers.index'),
+                'activeRoutes' => [
+                    'customers.index',
+                    'customers.create',
+                    'customers.edit',
+                    'customers.show',
+                ],
             ] : null,
         ])),
     ],
@@ -115,7 +152,6 @@ $defaultNavItems = [
         ])),
     ],
 ];
-
 $menu     = $navItems ?: $defaultNavItems;
 $initials = collect(explode(' ', $user->name ?? 'User'))->take(2)->map(fn($w) => strtoupper(substr($w, 0, 1)))->implode('');
 @endphp
